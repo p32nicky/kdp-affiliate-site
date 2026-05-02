@@ -68,7 +68,7 @@ async def product_detail(request: Request, slug: str):
 @app.get("/feed.xml")
 async def rss_feed():
     """RSS 2.0 feed — IFTTT watches this to auto-post to Pinterest."""
-    products = get_latest_products(settings.db_path, limit=50)
+    products = get_latest_products(settings.db_path, limit=10)
 
     rss = Element("rss", version="2.0")
     rss.set("xmlns:media", "http://search.yahoo.com/mrss/")
@@ -82,7 +82,7 @@ async def rss_feed():
         "%a, %d %b %Y %H:%M:%S +0000"
     )
 
-    for p in products:
+    for idx, p in enumerate(products):
         item = SubElement(channel, "item")
         product_page_url = f"{settings.site_url}/product/{p['slug']}"
         SubElement(item, "title").text = p["title"]
@@ -109,13 +109,14 @@ async def rss_feed():
             media.set("url", image_url)
             media.set("medium", "image")
 
-        pub_date = p["first_seen_at"] or ""
-        if pub_date:
-            try:
-                dt = datetime.fromisoformat(pub_date.replace("Z", "+00:00"))
-                pub_date = dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
-            except Exception:
-                pass
+        # Space pins 2 hours apart to avoid spam signals
+        try:
+            dt = datetime.fromisoformat((p["first_seen_at"] or "").replace("Z", "+00:00"))
+            from datetime import timedelta
+            dt = dt + timedelta(hours=idx * 2)
+            pub_date = dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
+        except Exception:
+            pub_date = ""
         SubElement(item, "pubDate").text = pub_date
 
     xml_bytes = tostring(rss, encoding="unicode", xml_declaration=False)
