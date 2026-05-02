@@ -84,9 +84,10 @@ async def rss_feed():
 
     for p in products:
         item = SubElement(channel, "item")
+        product_page_url = f"{settings.site_url}/product/{p['slug']}"
         SubElement(item, "title").text = p["title"]
-        SubElement(item, "link").text = p["affiliate_url"]
-        SubElement(item, "guid", isPermaLink="true").text = p["affiliate_url"]
+        SubElement(item, "link").text = product_page_url
+        SubElement(item, "guid", isPermaLink="true").text = product_page_url
         desc = p["description"] or f"KDP interior template: {p['title']}"
         SubElement(item, "description").text = (
             f'{desc}<br/><a href="{p["affiliate_url"]}">Get it on Creative Fabrica →</a>'
