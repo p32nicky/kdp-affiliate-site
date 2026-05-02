@@ -1,0 +1,187 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f4f0;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #1e1e28;
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.logo {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+nav { display: flex; align-items: center; gap: 12px; flex: 1; justify-content: flex-end; flex-wrap: wrap; }
+.search-form { display: flex; gap: 6px; }
+.search-form input {
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  width: 220px;
+}
+.search-form button, .btn-rss, .btn-ingest {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.search-form button { background: #dc5040; color: #fff; }
+.btn-rss { background: #f26522; color: #fff; text-decoration: none; }
+.btn-ingest { background: #4a9eff; color: #fff; }
+
+main { flex: 1; max-width: 1200px; margin: 0 auto; padding: 24px 20px; width: 100%; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.count { color: #666; font-size: 0.9rem; }
+.alert-error {
+  background: #fde8e8;
+  border: 1px solid #f5a5a5;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  color: #c0392b;
+  font-size: 0.9rem;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform .15s, box-shadow .15s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,.13); }
+.card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+.no-img {
+  width: 100%; aspect-ratio: 1/1;
+  background: #e8e6df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+.card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.card-body h3 { font-size: 0.95rem; font-weight: 700; line-height: 1.3; }
+.card-body p { font-size: 0.82rem; color: #555; flex: 1; }
+.cta {
+  display: inline-block;
+  margin-top: 8px;
+  background: #dc5040;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+  font-size: 0.95rem;
+}
+.pagination a {
+  color: #dc5040;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+/* Product detail */
+.product-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 700px) { .product-page { grid-template-columns: 1fr; } }
+.product-img-wrap img { width: 100%; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.12); }
+.product-info { display: flex; flex-direction: column; gap: 16px; }
+.badge {
+  display: inline-block;
+  background: #dc5040;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  align-self: flex-start;
+}
+.product-info h1 { font-size: 1.6rem; line-height: 1.3; }
+.desc { color: #444; line-height: 1.6; }
+.btn-buy {
+  display: inline-block;
+  background: #dc5040;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  align-self: flex-start;
+  transition: background .15s;
+}
+.btn-buy:hover { background: #b83328; }
+.affiliate-note { font-size: 0.78rem; color: #999; }
+.back-link { display: inline-block; margin-top: 32px; color: #dc5040; text-decoration: none; font-weight: 600; }
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.82rem;
+  color: #888;
+  border-top: 1px solid #e0ddd6;
+  margin-top: auto;
+}
+footer a { color: #dc5040; }

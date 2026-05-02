@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ p.title }} — {{ site_title }}{% endblock %}
+{% block content %}
+<div class="product-page">
+  <div class="product-img-wrap">
+    {% if p.local_image_path %}
+    <img src="{{ p.local_image_path }}" alt="{{ p.title }}"/>
+    {% elif p.image_url %}
+    <img src="{{ p.image_url }}" alt="{{ p.title }}"/>
+    {% endif %}
+  </div>
+  <div class="product-info">
+    <span class="badge">KDP Interior</span>
+    <h1>{{ p.title }}</h1>
+    {% if p.description %}
+    <p class="desc">{{ p.description }}</p>
+    {% endif %}
+    <a href="{{ p.affiliate_url }}" class="btn-buy" target="_blank" rel="nofollow noopener">
+      Get it on Creative Fabrica →
+    </a>
+    <p class="affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</p>
+  </div>
+</div>
+<a href="/" class="back-link">← Back to all templates</a>
+{% endblock %}

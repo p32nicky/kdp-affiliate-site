@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}{{ site_title }}{% endblock %}</title>
+  <meta name="p:domain_verify" content="083cba97f3be413f8fa7b1ad9809d011"/>
+  <link rel="alternate" type="application/rss+xml" title="{{ site_title }}" href="/feed.xml"/>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="/">📚 {{ site_title }}</a>
+      <nav>
+        <a href="/feed.xml" class="btn-rss">RSS Feed</a>
+        <form method="get" action="/" class="search-form">
+          <input type="text" name="q" placeholder="Search manuscripts…" value="{{ query|default('') }}"/>
+          <button type="submit">Search</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <p>KDP templates sourced from <a href="https://www.creativefabrica.com/ref/425959/" target="_blank" rel="nofollow">Creative Fabrica</a>. Affiliate links.</p>
+  </footer>
+</body>
+</html>

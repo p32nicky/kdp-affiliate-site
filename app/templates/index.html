@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="toolbar">
+  <p class="count">{{ total }} KDP manuscript templates</p>
+  <form method="post" action="/api/ingest" id="ingest-form">
+    <button type="submit" class="btn-ingest">↻ Fetch new</button>
+  </form>
+</div>
+
+{% if status.last_error %}
+<div class="alert-error">Last ingest error: {{ status.last_error }}</div>
+{% endif %}
+
+{% if products %}
+<div class="grid">
+  {% for p in products %}
+  <a href="/product/{{ p.slug }}" class="card">
+    {% if p.local_image_path %}
+    <img src="{{ p.local_image_path }}" alt="{{ p.title }}" loading="lazy"/>
+    {% elif p.image_url %}
+    <img src="{{ p.image_url }}" alt="{{ p.title }}" loading="lazy"/>
+    {% else %}
+    <div class="no-img">📄</div>
+    {% endif %}
+    <div class="card-body">
+      <h3>{{ p.title[:70] }}{% if p.title|length > 70 %}…{% endif %}</h3>
+      {% if p.description %}
+      <p>{{ p.description[:100] }}…</p>
+      {% endif %}
+      <span class="cta">Get template →</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  {% if page > 1 %}
+  <a href="/?page={{ page - 1 }}&q={{ query }}">&laquo; Prev</a>
+  {% endif %}
+  <span>Page {{ page }} / {{ total_pages }}</span>
+  {% if page < total_pages %}
+  <a href="/?page={{ page + 1 }}&q={{ query }}">Next &raquo;</a>
+  {% endif %}
+</div>
+
+{% else %}
+<div class="empty">
+  <p>No templates yet. Click <strong>Fetch new</strong> to scrape Creative Fabrica.</p>
+</div>
+{% endif %}
+
+<script>
+document.getElementById('ingest-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.textContent = 'Running…';
+  btn.disabled = true;
+  await fetch('/api/ingest', {method: 'POST'});
+  setTimeout(() => location.reload(), 3000);
+});
+</script>
+{% endblock %}
