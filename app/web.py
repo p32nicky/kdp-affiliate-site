@@ -121,7 +121,11 @@ async def rss_feed():
 
     xml_bytes = tostring(rss, encoding="unicode", xml_declaration=False)
     xml_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_bytes
-    return Response(content=xml_str, media_type="application/rss+xml")
+    return Response(
+        content=xml_str,
+        media_type="application/rss+xml",
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
 
 
 @app.get("/api/cron")
