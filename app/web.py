@@ -82,12 +82,15 @@ async def rss_feed():
         "%a, %d %b %Y %H:%M:%S +0000"
     )
 
+    from datetime import timedelta
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     for idx, p in enumerate(products):
         item = SubElement(channel, "item")
         product_page_url = f"{settings.site_url}/product/{p['slug']}"
+        unique_guid = f"{product_page_url}?d={today}"
         SubElement(item, "title").text = p["title"]
         SubElement(item, "link").text = product_page_url
-        SubElement(item, "guid", isPermaLink="true").text = product_page_url
+        SubElement(item, "guid", isPermaLink="false").text = unique_guid
         desc = p["description"] or f"KDP interior template: {p['title']}"
         SubElement(item, "description").text = (
             f'{desc}<br/><a href="{p["affiliate_url"]}">Get it on Creative Fabrica →</a>'
@@ -109,15 +112,9 @@ async def rss_feed():
             media.set("url", image_url)
             media.set("medium", "image")
 
-        # Space pins 2 hours apart to avoid spam signals
-        try:
-            dt = datetime.fromisoformat((p["first_seen_at"] or "").replace("Z", "+00:00"))
-            from datetime import timedelta
-            dt = dt + timedelta(hours=idx * 2)
-            pub_date = dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
-        except Exception:
-            pub_date = ""
-        SubElement(item, "pubDate").text = pub_date
+        # Today's date + space pins 2 hours apart
+        dt = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0) + timedelta(hours=idx * 2)
+        SubElement(item, "pubDate").text = dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
 
     xml_bytes = tostring(rss, encoding="unicode", xml_declaration=False)
     xml_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_bytes
